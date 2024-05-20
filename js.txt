@@ -1,0 +1,36 @@
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('encuesta_1ro_ASIR.json') // Actualización del nombre del archivo JSON
+        .then(response => response.json())
+        .then(data => {
+            displaySurveyResults(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+
+function displaySurveyResults(data) {
+    const surveyResults = document.getElementById('surveyResults');
+    const table = document.createElement('table');
+
+    // Crear encabezados de tabla
+    const headers = Object.keys(data[0]);
+    const headerRow = document.createElement('tr');
+    headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+
+    // Crear filas de datos
+    data.forEach(entry => {
+        const row = document.createElement('tr');
+        headers.forEach(header => {
+            const td = document.createElement('td');
+            td.textContent = entry[header];
+            row.appendChild(td);
+        });
+        table.appendChild(row);
+    });
+
+    surveyResults.appendChild(table);
+}
